@@ -11,15 +11,17 @@ Base = declarative_base()
 class Recipe(Base):
 	__tablename__ = 'recipe'
 	id = Column(Integer, primary_key = True)
-	user = relationship('User', back_populates = 'recipes')
 	user_id = Column(Integer, ForeignKey('user.id'))
+	user = relationship('User', foreign_keys = [user_id])
 	name = Column(String)
 	ingredients = Column(String)
-	pic = Column(String)
+	photo = Column(String)
 	how_to = Column(String)
-	recipe_type = relationship('Recipe_type', back_populates = 'recipes')
 	recipe_type_id = Column(Integer, ForeignKey('recipe_type.id'))
+	recipe_type = relationship('Recipe_type', foreign_keys = [recipe_type_id])
 
+	def set_photo(self, photo):
+		self.photo = photo
 
 class User(Base):
 	__tablename__ = 'user'
@@ -28,7 +30,7 @@ class User(Base):
 	name = Column(String)
 	email = Column(String, unique = True)
 	password_hash = Column(String)
-	recipes = relationship('Recipe', back_populates = 'user')
+	recipes = relationship('Recipe', foreign_keys = [recipe_id])
 
 	def hash_password(self, password):
 		self.password_hash = pwd_context.encrypt(password)
@@ -40,7 +42,8 @@ class Recipe_type(Base):
 	__tablename__ = 'recipe_type'
 	id = Column(Integer, primary_key = True)
 	name = Column(String)
-	recipes = relationship('Recipe', back_populates = 'recipe_type')
+	recipe_id = Column(Integer, ForeignKey('recipe.id'))
+	recipes = relationship('Recipe', foreign_keys = [recipe_id])
 
 
 
