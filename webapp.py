@@ -27,19 +27,54 @@ def all():
 	return render_template('all_recipes.html', recipes = recipes)
 
 
-@app.route('/login')
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
-	return render_template('log_in.html')
+	if request.method == 'GET':
+		return render_template('log_in.html')
+	elif request.method == 'POST':
+		email = request.form['email']
+		password = request.form['password']
+		if email is None or password is None:
+			flash('Missing Arguments')
+			return redirect(url_for('log_in'))
+		if verify_password(email, password):
+			customer = session.query(User).filter_by(email=email).one()
+			flash('Login Successful, welcome, %s' % customer.name)
+			login_session['name'] = user.name
+			login_session['email'] = user.email
+			login_session['id'] = user.id
+			return redirect(url_for('all_recipes'))
+		else:
+			# incorrect username/password
+			flash('Incorrect username/password combination')
+			return redirect(url_for('log_in'))
 
-
-@app.route('/sign_up')
+@app.route('/sign_up', methods = ['GET', 'POST'])
 def sign_up():
-	return render_template('sign_up.html')
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        if name is None or email is None or password is None:
+            flash("Your form is missing arguments")
+            return redirect(url_for('sign_up'))
+        if session.query(User).filter_by(email = email).first() is not None:
+            flash("A user with this email address already exists")
+            return redirect(url_for('sign_up'))
+        user = User(name = name, email = email)
+        #User.hash_password(password)
+        session.add(user)
+        session.commit()
+        flash("User Created Successfully!")
+        return redirect(url_for('all_recipes'))
+    else:
+		return render_template('sign_up.html')
 
 
 @app.route('/recipe/<int:recipe_id>')
 def recipe_show(recipe_id):
-	return render_template('recipe.html', recipe = recipe_id)
+	recipe = session.query(Recipe).filter_by(id=recipe_id).one()
+	return render_template('recipe.html', recipe = recipe)
 
 
 
