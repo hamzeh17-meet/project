@@ -2,14 +2,14 @@
 
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 
-<div class = "w3-container w3-blue">
+<body class = "w3-container w3-blue">
 
 
 {%for recipe in recipes%}
 
 <p> {{recipe.name}} </p>
-<img src = '{{recipe.photo}}' width = 300><span>description</span><span <a 
+<img src = '{{recipe.photo}}' width = 300><br>
 
 {%endfor%}
 
-</div>
+</body>

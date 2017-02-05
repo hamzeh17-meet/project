@@ -17,8 +17,6 @@ class Recipe(Base):
 	ingredients = Column(String)
 	photo = Column(String)
 	how_to = Column(String)
-	recipe_type_id = Column(Integer, ForeignKey('recipe_type.id'))
-	recipe_type = relationship('Recipe_type', foreign_keys = [recipe_type_id])
 
 	def set_photo(self, photo):
 		self.photo = photo
@@ -37,13 +35,6 @@ class User(Base):
 
 	def verify_password(self, password):
 		return pwd_context.verify(password, self.password_hash)	
-
-class Recipe_type(Base):
-	__tablename__ = 'recipe_type'
-	id = Column(Integer, primary_key = True)
-	name = Column(String)
-	recipe_id = Column(Integer, ForeignKey('recipe.id'))
-	recipes = relationship('Recipe', foreign_keys = [recipe_id])
 
 
 

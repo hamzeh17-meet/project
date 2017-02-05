@@ -1,4 +1,3 @@
-
 from flask import Flask, url_for, flash, render_template, redirect, request, g, send_from_directory
 from flask import session as login_session
 from databases import *
@@ -26,6 +25,14 @@ def all():
 	recipes = session.query(Recipe).all()
 	return render_template('all_recipes.html', recipes = recipes)
 
+def verify_password(email, password):
+	user = session.query(User).filter_by(email=email).first()
+	if not user or not user.verify_password(password):
+		return False
+	g.user = user
+	return True
+
+
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
@@ -47,7 +54,7 @@ def login():
 		else:
 			# incorrect username/password
 			flash('Incorrect username/password combination')
-			return redirect(url_for('log_in'))
+			return redirect(url_for('login'))
 
 @app.route('/sign_up', methods = ['GET', 'POST'])
 def sign_up():
@@ -66,7 +73,7 @@ def sign_up():
         session.add(user)
         session.commit()
         flash("User Created Successfully!")
-        return redirect(url_for('all_recipes'))
+        return render_template('all_recipes')
     else:
 		return render_template('sign_up.html')
 

@@ -1,20 +1,25 @@
 <!doctype html>
-<title>food home</title>
-<body class = "w3-container w3-blue"
-<div class="w3-container w3-blue">
+
+<div class=" w3-blue">
 
 <h1>Welcome</h1>
+<span>Do you have an account?  <a href={{url_for('login')}}>Login Here</a></span>
 
+<p>You don't? <a href={{url_for('sign_up')}}> Sign up Here</a></p>
+</div>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 
 
-<div class = 'Recipe'>
+
+<div class="w3-container w3-orange" class = 'Recipe'>
 	{% for recipe in recipes %}
-	{{recipe.name}}
+	<br>
+	<br>
+	{{recipe.name}}<br>
+	<img src = '{{recipe.photo}}' width = 300>
 	{% endfor %}
 
-</div>
 </div>
 </body>
