@@ -21,7 +21,7 @@ def home():
 
 
 @app.route('/all_recipes')
-def all():
+def all_recipes():
 	recipes = session.query(Recipe).all()
 	return render_template('all_recipes.html', recipes = recipes)
 

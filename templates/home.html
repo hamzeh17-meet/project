@@ -9,16 +9,20 @@
 </div>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href={{url_for('static', filename='w3.css')}}>
 
 
 
 <div class="w3-container w3-orange" class = 'Recipe'>
+<a href={{url_for("all_recipes")}}>SEE ALL</a>
 	{% for recipe in recipes %}
 	<br>
 	<br>
-	{{recipe.name}}<br>
+
+	<b>{{recipe.name}}</b><br>
+	<div class="w3-card-12" style="width:50%">
 	<img src = '{{recipe.photo}}' width = 300>
+	 </div>
 	{% endfor %}
 
 </div>
