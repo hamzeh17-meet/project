@@ -1,5 +1,11 @@
 <!doctype html>
-<title>food signup</title>
+<title>Sign Up, or else...</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href={{url_for('static', filename='w3.css')}}>
+
+<div class="w3-container w3-center w3-orange" class = 'Recipe'>
 
 <form action="{{ url_for('sign_up') }}" method = 'POST' enctype=multipart/form-data>
   Name:<br>
@@ -8,13 +14,11 @@
   <input type="text" name="email"><br>
   Password:<br>
   <input type="password" name="password"><br>
-  <input type="submit" value="Create Account" class="w3-container w3-blue">
-  <a href={{url_for('login')}}>cancel</a>
+  <input type="submit" value="Create Account" class="w3-container w3-green">
+  <a href={{url_for('login')}} class="w3-red">cancel</a>
 </form>
-
-
-
-
-
+</div>
+<br>
+<body class="w3-blue"></body>
 
 

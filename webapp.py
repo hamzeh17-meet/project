@@ -45,8 +45,8 @@ def login():
 			flash('Missing Arguments')
 			return redirect(url_for('log_in'))
 		if verify_password(email, password):
-			customer = session.query(User).filter_by(email=email).one()
-			flash('Login Successful, welcome, %s' % customer.name)
+			user = session.query(User).filter_by(email=email).one()
+			flash('Login Successful, welcome {{user.name}}')
 			login_session['name'] = user.name
 			login_session['email'] = user.email
 			login_session['id'] = user.id
@@ -68,7 +68,7 @@ def sign_up():
         if session.query(User).filter_by(email = email).first() is not None:
             flash("A user with this email address already exists")
             return redirect(url_for('sign_up'))
-        user = User(name = name, email = email)
+        user = User(name = name, email = email, password = password)
         #User.hash_password(password)
         session.add(user)
         session.commit()
