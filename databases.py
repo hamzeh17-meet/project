@@ -30,11 +30,12 @@ class User(Base):
 	password_hash = Column(String)
 	recipes = relationship('Recipe', foreign_keys = [recipe_id])
 
-	def hash_password(self, password):
-		self.password_hash = pwd_context.encrypt(password)
+	# def hash_password(self, password):
+	# 	self.password_hash = pwd_context.encrypt(password)
 
 	def verify_password(self, password):
-		return pwd_context.verify(password, self.password_hash)	
+		#return pwd_context.verify(password, self.password_hash)	
+		return password == self.password_hash
 
 
 

@@ -12,7 +12,7 @@ recipe_ingredients = ["700 g watermelon, 1 small red onion, 180 g feta cheese, 1
 for i in range(len(recipe_names)):
 	recipe = Recipe(name = recipe_names[i], photo = recipe_photos[i], ingredients = recipe_ingredients[i])
 	session.add(recipe)
-	session.commit()
+session.commit()
 
 
 print("Done")

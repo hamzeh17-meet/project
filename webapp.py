@@ -17,8 +17,10 @@ session = DBSession()
 @app.route('/')
 def home():
 	recipes = session.query(Recipe).all()
-	return render_template('home.html', recipes = recipes)
-
+	if 'user' not in login_session: 
+		return render_template('home1.html', recipes = recipes)
+	else:
+		return render_template('home2.html', recipes = recipes)
 
 @app.route('/all_recipes')
 def all_recipes():
@@ -43,14 +45,14 @@ def login():
 		password = request.form['password']
 		if email is None or password is None:
 			flash('Missing Arguments')
-			return redirect(url_for('log_in'))
+			return redirect(url_for('login'))
 		if verify_password(email, password):
 			user = session.query(User).filter_by(email=email).one()
 			flash('Login Successful, welcome {{user.name}}')
 			login_session['name'] = user.name
 			login_session['email'] = user.email
 			login_session['id'] = user.id
-			return redirect(url_for('all_recipes'))
+			return redirect(url_for('home'))
 		else:
 			# incorrect username/password
 			flash('Incorrect username/password combination')
@@ -68,22 +70,24 @@ def sign_up():
         if session.query(User).filter_by(email = email).first() is not None:
             flash("A user with this email address already exists")
             return redirect(url_for('sign_up'))
-        user = User(name = name, email = email, password = password)
+        user = User(name = name, email = email, password_hash = password)
         #User.hash_password(password)
         session.add(user)
         session.commit()
         flash("User Created Successfully!")
-        return render_template('all_recipes')
+        return redirect(url_for('home'))
     else:
 		return render_template('sign_up.html')
 
 
 @app.route('/recipe/<int:recipe_id>')
-def recipe_show(recipe_id):
+def recipe(recipe_id):
 	recipe = session.query(Recipe).filter_by(id=recipe_id).one()
 	return render_template('recipe.html', recipe = recipe)
 
-
+@app.route('/about')
+def about():
+	return render_template('about.html')
 
 
 
